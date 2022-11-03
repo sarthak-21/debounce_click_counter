@@ -1,25 +1,32 @@
-import logo from './logo.svg';
-import './App.css';
+import "./styles.css";
+import { useState } from 'react';
 
-function App() {
+export default function App() {
+  const [counter, setCounter] = useState(0);
+
+  function debounce(func, timeout = 300){
+    let timer;
+    return (...args) => {
+      clearTimeout(timer);
+      timer = setTimeout(() => { func.apply(this, args); }, timeout);
+    };
+  }
+  const changeHandler = debounce(() => increaseCount());
+
+  const increaseCount = () =>{
+    setCounter(count => count + 1);
+  }
+
+  const reset = () =>{
+    setCounter(0);
+  }
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <h1>Click Counter</h1>
+      <button className="button-style" onClick={changeHandler}>Click</button>
+      <h3 className="count-value">{counter}</h3>
+      <button className="button-style" onClick={reset}>Reset Count</button>
     </div>
   );
 }
-
-export default App;
